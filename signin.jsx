@@ -8,8 +8,6 @@ Signin = React.createClass({
   render() {
     return (
         // must be in an HTML tag
-
-
         <li>{this.props.signin.guest} is a guest of {this.props.signin.member}</li>
 
     );

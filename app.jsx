@@ -7,7 +7,8 @@ App = React.createClass({
      // Loads items from the Tasks collection and puts them on this.data.tasks
      getMeteorData() {
        return {
-         signins: Signins.find({}).fetch()
+         //signins: Signins.find({}).fetch() / this will list everything unsorted
+         signins: Signins.find({}, {sort: {createdAt: -1}}).fetch()
        }
      },
 
