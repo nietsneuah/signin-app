@@ -4,12 +4,26 @@ App = React.createClass({
     // This mixin makes the getMeteorData method work
      mixins: [ReactMeteorData],
 
-     // Loads items from the Tasks collection and puts them on this.data.tasks
-     getMeteorData() {
+     getInitialState() {
        return {
-         //signins: Signins.find({}).fetch() / this will list everything unsorted
-         signins: Signins.find({}, {sort: {createdAt: -1}}).fetch()
+         // Initialize the state of hideCompleted
+         hideCompleted: false
        }
+     },
+
+     // Loads items from the Tasks collection and puts them on this.data.signins
+     getMeteorData() {
+       let query = {};
+
+       if (this.state.hideCompleted) {
+         // If hide checkbox is checked then filter
+         query = {checked: {$ne: true}};
+       }
+
+       return {
+         signins: Signins.find({}, {sort: {createdAt: -1}}).fetch(),
+         incompleteCount: Signins.find({checked: {$ne: true}}).count()
+       };
      },
 
      renderSignins() {
@@ -35,15 +49,27 @@ App = React.createClass({
          // Clear form
          React.findDOMNode(this.refs.guestInput).value = "";
          React.findDOMNode(this.refs.memberInput).value = "";
-
+       },
+       // Force a Re-Render with this.state by calling this.setState
+       toggleHideCompleted() {
+         this.setState({
+           hideCompleted: ! this.state.hideCompleted
+         });
        },
 
      render() {
           return (
             <div className="container">
               <header>
-                <h1>{Signins.find().count()}    Guests currently at the pool</h1>
-
+                <h1>{this.data.incompleteCount}    Guests currently at the pool</h1>
+                <label className="hide-completed">
+                  <input
+                  type="checkbox"
+                  readOnly={true}
+                  checked={this.state.hideCompleted}
+                  onClick={this.toggleHideCompleted} />
+                Hide Billed Guests from view
+                </label>
                 {/* Comment -- Add Input with a form */}
              <form className="new-task" onSubmit={this.handleSubmit} >
                 <input
