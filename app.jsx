@@ -7,7 +7,7 @@ App = React.createClass({
      getInitialState() {
        return {
          // Initialize the state of hideCompleted
-         hideCompleted: false
+         hideCompleted: true
        }
      },
 
@@ -21,7 +21,7 @@ App = React.createClass({
        }
 
        return {
-         signins: Signins.find({}, {sort: {createdAt: -1}}).fetch(),
+         signins: Signins.find(query, {sort: {createdAt: -1}}).fetch(),
          incompleteCount: Signins.find({checked: {$ne: true}}).count()
        };
      },
@@ -61,15 +61,17 @@ App = React.createClass({
           return (
             <div className="container">
               <header>
-                <h1>{this.data.incompleteCount}    Guests currently at the pool</h1>
                 <label className="hide-completed">
                   <input
                   type="checkbox"
                   readOnly={true}
                   checked={this.state.hideCompleted}
                   onClick={this.toggleHideCompleted} />
-                Hide Billed Guests from view
+                Hide Billed
                 </label>
+
+                <h1>{this.data.incompleteCount}    Guests currently at the pool</h1>
+
                 {/* Comment -- Add Input with a form */}
              <form className="new-task" onSubmit={this.handleSubmit} >
                 <input
@@ -81,7 +83,8 @@ App = React.createClass({
                     ref="memberInput"
                     placeholder="Add Member Name Here" required />
                 <button onClick={this.handleSubmit}>Save</button>
-              </form>
+            </form>
+
               </header>
 
               <ul>
