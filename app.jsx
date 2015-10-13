@@ -41,8 +41,8 @@ App = React.createClass({
          var member = React.findDOMNode(this.refs.memberInput).value.trim();
 
          Signins.insert({
-           guest: guest,
-           member: member,
+           guest: guest.toUpperCase(),
+           member: member.toUpperCase(),
            createdAt: new Date() // current time
          });
 
@@ -74,16 +74,17 @@ App = React.createClass({
 
                 {/* Comment -- Add Input with a form */}
              <form className="new-task" onSubmit={this.handleSubmit} >
-                <input
-                  type="text"
-                  ref="guestInput"
-                  placeholder="Add Guest Name Here" required />
-                  <input
-                    type="text"
-                    ref="memberInput"
-                    placeholder="Add Member Name Here" required />
+               <input
+                 type="text"
+                 ref="memberInput"
+                 placeholder="Add Member Name Here" required />
+               <input
+                 type="text"
+                 ref="guestInput"
+                 placeholder="Add Guest Name Here" required />
+
                 <button onClick={this.handleSubmit}>Save</button>
-            </form>
+             </form>
 
               </header>
 
